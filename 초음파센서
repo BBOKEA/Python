@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#  hcsr04.py
+#  
+#  Copyright 2021  <pi@raspberrypi>
+#  
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+#  
+#  
+
+
+import RPi.GPIO as GPIO
+import time
+
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+trig=23
+echo=24
+print("distance measurement in progress")
+GPIO.setup(trig,GPIO.OUT)
+GPIO.setup(echo,GPIO.IN)
+
+print("waiting for sensor to settle")
+GPIO.output(trig,False)
+time.sleep(2)
+try:
+    while True:
+        GPIO.output(trig,True)
+        time.sleep(0.00001)
+        GPIO.output(trig,False)
+        
+        while GPIO.input(echo)==0:
+            start = time.time()
+        while GPIO.input(echo)==1:
+            stop=time.time()
+        
+        check_time = stop-start
+        distance = check_time*34300/2
+        print("distance : %.1f cm" %distance)
+        time.sleep(0.4)
+
+except KeyboardInterrupt:
+    print("measurement stopped by user")
+    GPIO.cleanup()
