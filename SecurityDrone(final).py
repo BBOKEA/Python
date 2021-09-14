@@ -13,7 +13,7 @@ import threading #제어 스레드
 import queue # 큐모듈 , 다중 생산자 , 다중 소비자 구현
 
 from tkinter import *
-from SecurityDrone_SpeedCheck import *
+from SecurityDrone_SpeedCheck_2 import *
 
 import requests
 import json
